@@ -1,0 +1,75 @@
+Dumitrescu Rares Matei 331CA
+
+-----------------------------------------------------
+MyHost Class
+
+The MyHost class is a task scheduler that manages tasks based on
+their priority and execution time. It utilizes a PriorityBlockingQueue
+to store tasks and executes them in order of priority.
+
+- *taskBlockingQueue*: A PriorityBlockingQueue that stores
+tasks based on their priority and start times.
+
+- *currentRunningTask*: Represents the task currently being executed.
+
+- *taskIsRunning*: Indicates whether a task is currently being processed.
+Synchronization:
+
+- *lockTaskRunning*: Object used for synchronization
+to control task execution.
+
+- *startTimeCurrentTask*: Represents the start time for the
+current running task.
+
+Task Execution Loop (run method):
+
+The class executes an infinite loop (while (runningHost))
+where it continuously retrieves tasks from the taskBlockingQueue.
+It synchronizes task execution using lockTaskRunning and wait()
+to control the task execution time.
+If a task completes its execution time, it's marked as finished.
+Otherwise, if preempted, the remaining time is updated,
+and it's re-added to the queue.
+
+Task Addition (addTask method):
+
+The addTask method adds a new task to the queue and checks if it
+should preempt the currently running task based on priority and preemptibility.
+
+- *getQueueSize*: Returns the size of the task queue.
+- *getTaskIsRunning*: Indicates if a task is currently running
+(returns 1 if running, 0 otherwise).
+- *getWorkLeft*: Calculates the total work left in the queue and
+the remaining work of the current running task.
+Shutdown:
+shutdown method stops the task execution loop, clears the task queue,
+and notifies waiting threads to terminate.
+
+--------------------------------------------------------------------------
+The MyDispatcher class manages the distribution of tasks
+to different hosts based on specified scheduling algorithms.
+It extends the Dispatcher class and handles task assignment
+to a list of hosts using various scheduling strategies.
+
+algorithm: Represents the selected scheduling algorithm.
+hosts: A list of hosts to which tasks are assigned.
+Scheduling Algorithms:
+
+- *roundRobin*: Assigns tasks in a round-robin fashion to hosts.
+- *shortestQueue*: Assigns tasks to the host with the shortest queue size.
+- *sita*: Assigns tasks based on their type to specific hosts.
+- *lwl*: Assigns tasks to the host with the least work left.
+Helper Methods:
+
+- *addTask*: Determines the appropriate scheduling algorithm
+based on the chosen strategy and assigns tasks accordingly.
+Workflow:
+
+
+Based on the selected scheduling algorithm, the class dispatches
+tasks to hosts using different strategies:
+- roundRobin: Assigns tasks sequentially in a round-robin manner to hosts.
+- shortestQueue: Assigns tasks to hosts based on the host
+with the smallest queue size.
+- sita: Assigns tasks to specific hosts based on task type (e.g., SHORT, MEDIUM, LONG).
+- lwl: Assigns tasks to the host with the least amount of work left.
